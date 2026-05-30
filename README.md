@@ -36,16 +36,12 @@
 # 克隆项目
 git clone https://github.com/[your-username]/wasm-ffmpeg-tryer.git
 cd wasm-ffmpeg-tryer
-
 # 安装依赖
 npm install
-
 # 启动开发服务器（默认端口 65030）
 npm run dev
-
 # 构建生产版本
 npm run build
-
 # 预览生产构建
 npm run preview
 ```
@@ -68,13 +64,12 @@ npm run preview
 # 仅测试构建（不部署）
 git commit -m "build action: 测试 CI 流程"
 git push
-
 # 构建 + 部署 + 发布 Release
 git commit -m "build release: v0.2.0 优化压缩算法"
 git push
 ```
 
-详细说明请查看 [docs/build.md](docs/build.md)
+详细说明请查看 [.github/workflows/build.md](.github/workflows/build.md)
 
 ## 🛠️ 技术栈
 
@@ -119,7 +114,3 @@ wasm-ffmpeg-tryer/
 ## 🤝 贡献
 
 欢迎提交 Issue 和 Pull Request！
-
-## 📄 License
-
-MIT License - 详见 [LICENSE](LICENSE) 文件
