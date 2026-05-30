@@ -2,9 +2,9 @@
 
 基于 WebAssembly 的浏览器端视频压缩工具
 
-[![GitHub Pages](https://img.shields.io/badge/GitHub%20Pages-Online-222222?logo=githubpages&logoColor=white)](https://VincentZyuApps.github.io/wasm-ffmpeg-tryer/) [https://VincentZyuApps.github.io/wasm-ffmpeg-tryer/](https://VincentZyuApps.github.io/wasm-ffmpeg-tryer/)
+[![GitHub Pages](https://img.shields.io/badge/GitHub%20Pages-Online-222222?style=for-the-badge&logo=githubpages&logoColor=white)](https://VincentZyuApps.github.io/wasm-ffmpeg-tryer/) [https://VincentZyuApps.github.io/wasm-ffmpeg-tryer/](https://VincentZyuApps.github.io/wasm-ffmpeg-tryer/)
 <br>
-[![Cloudflare Pages](https://img.shields.io/badge/Cloudflare%20Pages-Online-F38020?logo=cloudflarepages&logoColor=white)](https://wasm-ffmpeg-tryer.pages.dev/) [https://wasm-ffmpeg-tryer.pages.dev/](https://wasm-ffmpeg-tryer.pages.dev/)
+[![Cloudflare Pages](https://img.shields.io/badge/Cloudflare%20Pages-Online-F38020?style=for-the-badge&logo=cloudflarepages&logoColor=white)](https://wasm-ffmpeg-tryer.pages.dev/) [https://wasm-ffmpeg-tryer.pages.dev/](https://wasm-ffmpeg-tryer.pages.dev/)
 
 ### 📥 使用方式
 
