@@ -8,7 +8,31 @@
 
 ### 📥 使用方式
 
-**离线使用**: 下载下方的 zip 包，解压后打开 `index.html`
+**离线使用**: 下载下方的 zip 包，解压后用本地 HTTP 服务器访问
+
+#### 启动本地服务器
+
+**方案1：Python（推荐，最简单）**
+```bash
+cd wasm-ffmpeg-tryer-v{version}
+python -m http.server 60530
+# 然后在浏览器访问 http://localhost:60530
+```
+
+**方案2：Node.js**
+```bash
+npx http-server -p 60530
+# 然后在浏览器访问 http://localhost:60530
+```
+
+**方案3：Node.js serve 工具**
+```bash
+npm install -g serve
+serve -l 60530
+# 然后在浏览器访问 http://localhost:60530
+```
+
+> ⚠️ **重要**: 不能直接打开 `index.html` 文件，浏览器安全策略会阻止资源加载。必须通过 HTTP 服务器访问。
 
 ### ✨ 功能特性
 
