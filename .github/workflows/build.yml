@@ -143,7 +143,7 @@ jobs:
 
   release:
     name: Create GitHub Release
-    needs: [check, build]
+    needs: [check, build, deploy-gh-pages, deploy-cf-pages]
     if: needs.check.outputs.should_release == 'true' && github.event_name == 'push'
     runs-on: ubuntu-latest
     steps:
