@@ -1,7 +1,7 @@
 import { defineConfig } from 'vite';
 
 export default defineConfig({
-  base: '/wasm-ffmpeg-tryer/',
+  base: process.env.VITE_BASE_URL || '/wasm-ffmpeg-tryer/',
   build: {
     outDir: 'dist',
     assetsDir: 'assets',

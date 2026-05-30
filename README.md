@@ -93,10 +93,12 @@ git push
 
 ## 🛠️ 技术栈
 
-- **[Vite](https://vitejs.dev/)** - 下一代前端构建工具
-- **[FFmpeg.wasm](https://ffmpegwasm.netlify.app/)** - WebAssembly 版本的 FFmpeg
-- **Vanilla JavaScript** - 无框架依赖，轻量高效
-- **GitHub Actions** - 自动化 CI/CD
+| Package | Version | Description |
+|:---|:---|:---|
+| [![Vite](https://img.shields.io/badge/Vite-5.2-646CFF?style=flat-square&logo=vite&logoColor=white)](https://vitejs.dev/) | 5.2 | 下一代前端构建工具 |
+| [![FFmpeg.wasm](https://img.shields.io/badge/FFmpeg.wasm-0.12-007808?style=flat-square&logo=ffmpeg&logoColor=white)](https://ffmpegwasm.netlify.app/) | 0.12 | WebAssembly 版本的 FFmpeg |
+| [![JavaScript](https://img.shields.io/badge/JavaScript-Vanilla-F7DF1E?style=flat-square&logo=javascript&logoColor=black)](https://developer.mozilla.org/en-US/docs/Web/JavaScript) | - | 无框架依赖，轻量高效 |
+| [![GitHub Actions](https://img.shields.io/badge/GitHub%20Actions-CI%2FCD-2088FF?style=flat-square&logo=github-actions&logoColor=white)](https://github.com/features/actions) | - | 自动化 CI/CD |
 
 ## 📚 依赖说明
 

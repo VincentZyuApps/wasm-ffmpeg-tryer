@@ -1,6 +1,6 @@
 {
   "name": "wasm-ffmpeg-tryer",
-  "version": "0.4.5",
+  "version": "0.4.6",
   "type": "module",
   "scripts": {
     "dev": "vite",
