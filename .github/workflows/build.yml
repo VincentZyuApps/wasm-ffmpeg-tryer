@@ -1,0 +1,175 @@
+name: Build & Deploy
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+jobs:
+  check:
+    name: Check commit message
+    runs-on: ubuntu-latest
+    outputs:
+      should_build: ${{ steps.flags.outputs.should_build }}
+      should_release: ${{ steps.flags.outputs.should_release }}
+      version: ${{ steps.flags.outputs.version }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Parse commit message
+        id: flags
+        env:
+          COMMIT_MSG: ${{ github.event.head_commit.message }}
+        run: |
+          MSG="$COMMIT_MSG"
+
+          VERSION="v$(grep '"version"' package.json | head -1 | sed 's/.*"\(.*\)".*/\1/')"
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "📦 Version: $VERSION"
+
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            echo "should_build=true" >> "$GITHUB_OUTPUT"
+            echo "should_release=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          BUILD=false
+          RELEASE=false
+
+          if echo "$MSG" | grep -qi "build release"; then
+            BUILD=true
+            RELEASE=true
+          elif echo "$MSG" | grep -qi "build action"; then
+            BUILD=true
+          fi
+
+          echo "should_build=$BUILD" >> "$GITHUB_OUTPUT"
+          echo "should_release=$RELEASE" >> "$GITHUB_OUTPUT"
+          echo "📋 Flags: build=$BUILD release=$RELEASE"
+
+  build:
+    name: Build
+    needs: check
+    if: needs.check.outputs.should_build == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist/
+
+  deploy:
+    name: Deploy to GitHub Pages
+    needs: [check, build]
+    if: needs.check.outputs.should_build == 'true' && github.event_name == 'push'
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload to Pages
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+
+  release:
+    name: Create Release
+    needs: [check, build]
+    if: needs.check.outputs.should_release == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Download artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist
+
+      - name: Create release package
+        run: |
+          VERSION="${{ needs.check.outputs.version }}"
+          cd dist
+          zip -r ../wasm-ffmpeg-tryer-${VERSION}.zip .
+          cd ..
+          echo "📦 Created: wasm-ffmpeg-tryer-${VERSION}.zip"
+          ls -lh wasm-ffmpeg-tryer-${VERSION}.zip
+
+      - name: Delete existing release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          VERSION="${{ needs.check.outputs.version }}"
+          gh release delete "$VERSION" --yes --cleanup-tag 2>/dev/null || echo "No existing release"
+          sleep 2
+
+      - name: Create GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          VERSION="${{ needs.check.outputs.version }}"
+          cat > release_notes.md << 'EOF'
+          ## 🎬 视频压缩工具 ${VERSION}
+
+          基于 WebAssembly 的浏览器端视频压缩工具
+
+          ### 📥 使用方式
+
+          **在线使用**: https://${{ github.repository_owner }}.github.io/wasm-ffmpeg-tryer/
+
+          **离线使用**: 下载下方的 zip 包，解压后打开 `index.html`
+
+          ### ✨ 功能特性
+
+          - ✅ 纯浏览器端处理，数据不上传
+          - ✅ 支持自定义目标大小
+          - ✅ 支持调整分辨率
+          - ✅ 实时进度显示
+
+          ---
+
+          **构建时间**: $(date -u '+%Y-%m-%d %H:%M UTC')
+          EOF
+
+          gh release create "$VERSION" \
+            --title "wasm-ffmpeg-tryer ${VERSION}" \
+            --notes-file release_notes.md \
+            --latest \
+            wasm-ffmpeg-tryer-${VERSION}.zip

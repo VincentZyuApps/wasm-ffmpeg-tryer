@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>视频压缩工具 - Video Compressor</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>🎬 视频压缩工具</h1>
+    <p class="subtitle">使用 WebAssembly 在浏览器中压缩视频</p>
+
+    <div class="upload-area">
+      <input type="file" id="videoInput" accept="video/*">
+      <label for="videoInput" class="upload-btn">选择视频文件</label>
+    </div>
+
+    <div id="controls" class="controls hidden">
+      <div class="control-group">
+        <label>目标大小 (MB):</label>
+        <input type="number" id="targetSize" value="10" min="1" max="500">
+      </div>
+
+      <div class="control-group">
+        <label>或设置分辨率:</label>
+        <select id="resolution">
+          <option value="auto">自动</option>
+          <option value="1920">1920p</option>
+          <option value="1280">1280p</option>
+          <option value="720">720p</option>
+          <option value="480">480p</option>
+        </select>
+      </div>
+
+      <button id="compressBtn" class="compress-btn">开始压缩</button>
+    </div>
+
+    <div id="progress" class="progress hidden">
+      <div class="progress-bar">
+        <div id="progressFill" class="progress-fill"></div>
+      </div>
+      <p id="progressText">准备中...</p>
+    </div>
+
+    <div id="result" class="result hidden">
+      <h3>✅ 压缩完成</h3>
+      <p id="resultInfo"></p>
+      <button id="downloadBtn" class="download-btn">下载压缩后的视频</button>
+    </div>
+  </div>
+
+  <script type="module" src="/main.js"></script>
+</body>
+</html>
